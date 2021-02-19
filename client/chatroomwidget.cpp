@@ -18,9 +18,7 @@
  **************************************************************************/
 
 #include "chatroomwidget.h"
-
 #include <iostream>
-
 #include <QtWidgets/QVBoxLayout>
 #include <QtWidgets/QLabel>
 #include <QtWidgets/QToolButton>
@@ -650,31 +648,70 @@ QString ChatRoomWidget::sendCommand(const QStringRef& command,
 
 void ChatRoomWidget::sendInput()
 {
-    
+
+
     std::string miTexto = m_chatEdit->toPlainText().toStdString();
 
-    size_t len = miTexto.size();
+    size_t qq = miTexto.size();
+    char* copy = new char[qq];
+    copy[qq] = '\0';
 
-    if(len >= 3) {
-        char c1 = miTexto[0];
-        char c2 = miTexto[1];
-        char c3 = miTexto[2];
-
-        /*
-        tarea: imprimir cada caracter y su posicion en el string
-        */
-std::string miTexto= m_chatEdit->toPlainText().toStdString();
-    size_t len = miTexto.size();
-    int i = len;
-
-
-    while (i >= 1) {
-    char c = miTexto [(len-i)];
-    std::cout << "Caracter #" << ((len-i)+1) << ": "<< c << "\n";
-       i--;
-   } 
+    for (int i = 0; i < qq; i++) {
+        copy[i] = miTexto[i];
     }
+    int vowels = 0;
+	    for (int i= 0; i<qq; ++i){
+
+
+		char ActualLetter = tolower(miTexto[i]);
+		if (
+			ActualLetter == 'a' || ActualLetter == 'e' || ActualLetter == 'i' || ActualLetter == 'o' || 
+			ActualLetter == 'u'
+			)
+		{
+			vowels++;
+		}
+        }
+    std::cout << "The vowel number is: " << vowels <<"\n";
+    strrev(copy);
+    if (copy == miTexto) {
+    std::cout << "The word is palindrome" << "\n";
+    }
+    delete[] copy;
+    int words = 0;
+        for (int i=1;  i<qq ; i++) {
+        if (miTexto[i-1] == ' ' && isalpha(miTexto[i])) {
+            words++;}    
+        } 
+        if (isalpha(miTexto[0])) {words++;}
+    std::cout << "The number of words is: " << words << "\n";
+
+    int helco = 0;
+	    for (int i= 4; i<qq; ++i){
+
+        char h = tolower(miTexto[i-4]); char e = tolower(miTexto[i-3]);
+        char l = tolower(miTexto[i-2]); char c = tolower(miTexto[i-1]);
+        char o = tolower(miTexto[i]);
+
+		if (
+		    h == 'h' && e == 'e' && l == 'l' && c == 'c' && o == 'o'
+			)
+		{
+			helco++;
+		}
+        }
+    std::cout << "The number of helco is: " << helco <<"\n";
+
+        int numbers = 0;
+        for (int i=0;  i<qq  ; i++) {
+        
+        if (isdigit(miTexto[i])) {
+            numbers++;}    
+        }
+
+    std::cout << "The number of numbers is: " << numbers << "\n";
     
+
     if (!attachedFileName.isEmpty())
         sendFile();
     else {
